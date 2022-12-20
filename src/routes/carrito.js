@@ -1,11 +1,7 @@
 import express from 'express';
-// import { Contenedor } from '../Contenedor/ContenedorFs.js';
-import ContenedorProductos from '../daos/productos/productosDaoMongoDb.js'
-import ContenedorCarritos from '../daos/carritos/carritosDaoMongoDb.js'
 const rutaCarrito = express.Router();
-
-const carts = new ContenedorCarritos('src/DB/carrito.txt');
-const productos = new ContenedorProductos('src/DB/productos.txt');
+// import { Contenedor } from '../Contenedor/ContenedorFs.js';
+import { productos, carritos } from '../daos/index.js';
 
 
 rutaCarrito.get('/', async (req, res) => {
@@ -15,7 +11,7 @@ rutaCarrito.get('/', async (req, res) => {
 
 rutaCarrito.delete('/:id', async (req, res) => {
     const idCarrito = parseInt(req.params.id);
-    await carts.deleteById(idCarrito);
+    await carritos.deleteById(idCarrito);
     res.json({
         status: 'ok'
     });
@@ -23,7 +19,7 @@ rutaCarrito.delete('/:id', async (req, res) => {
 
 rutaCarrito.get('/:id/productos', async (req, res) => {
     const idCarrito = parseInt(req.params.id);
-    const listaProductos = await carts.getById(idCarrito);
+    const listaProductos = await carritos.getById(idCarrito);
     res.json(listaProductos.productos)
 });
 
@@ -32,7 +28,7 @@ rutaCarrito.post('/', async (req, res) => {
         timestamp: Date.now(),
         productos: []
     };
-    const id = await carts.save(carrito);
+    const id = await carritos.save(carrito);
     res.json(id)
 });
 
@@ -40,9 +36,9 @@ rutaCarrito.post('/:id/productos', async (req, res) => {
     const idCarrito = parseInt(req.params.id);
     const idProducto = req.body.idProducto;
     const producto = await productos.getById(idProducto);
-    const carrito = await carts.getById(idCarrito);
+    const carrito = await carritos.getById(idCarrito);
     carrito.productos.push(producto);
-    await carts.update(idCarrito, carrito);
+    await carritos.update(idCarrito, carrito);
     res.json({
         status: 'ok'
     });
@@ -51,7 +47,7 @@ rutaCarrito.post('/:id/productos', async (req, res) => {
 rutaCarrito.delete('/:id/productos/:id_prod', async (req, res) => {
     const idCarrito = parseInt(req.params.id);
     const idProducto = parseInt(req.params.id_prod);
-    const carrito = await carts.deleteById(idCarrito);
+    const carrito = await carritos.deleteById(idCarrito);
     let indexToDelete = -1;
     carrito.productos.forEach((producto, index) => {
         if (producto.id == idProducto) {
@@ -61,7 +57,7 @@ rutaCarrito.delete('/:id/productos/:id_prod', async (req, res) => {
     if (indexToDelete => 0) {
         carrito.productos.splice(indexToDelete, 1);
     }
-    await carts.update(idCarrito, carrito);
+    await carritos.update(idCarrito, carrito);
     res.json({
         status: 'ok'
     });

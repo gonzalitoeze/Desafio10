@@ -1,6 +1,6 @@
 import { Contenedor } from "../../Contenedor/contenedorMongoDb.js";
 
-class ProductosDaoMemoria extends Contenedor {
+class ProductosDaoMongoDb extends Contenedor {
     constructor() {
         super('productos', {
             title: { type: String, require: true },
@@ -10,4 +10,4 @@ class ProductosDaoMemoria extends Contenedor {
     }
 }
 
-export default ProductosDaoMemoria;
+export default ProductosDaoMongoDb;

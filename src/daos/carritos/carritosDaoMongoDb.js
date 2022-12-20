@@ -1,6 +1,6 @@
 import { Contenedor } from "../../Contenedor/contenedorMongoDb.js";
 
-class CarritosDaoMemoria extends Contenedor {
+class CarritosDaoMongoDb extends Contenedor {
     constructor() {
         super('carritos', {
             productos: {type: [], require: true},
@@ -9,4 +9,4 @@ class CarritosDaoMemoria extends Contenedor {
     }
 }
 
-export default CarritosDaoMemoria;
+export default CarritosDaoMongoDb;

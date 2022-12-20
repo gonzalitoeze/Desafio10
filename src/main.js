@@ -1,7 +1,7 @@
 import express from 'express';
 //IMPORTAR RUTAS
-import { rutaProducto } from './src/routes/productos.js';
-import { rutaCarrito } from './src/routes/carrito.js';
+import { rutaProducto } from './routes/productos.js';
+import { rutaCarrito } from './routes/carrito.js';
 const app = express();
 const port = process.env.PORT || 8080;
 

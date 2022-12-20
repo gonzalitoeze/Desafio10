@@ -1,17 +1,16 @@
 import express from 'express';
 // import { Contenedor } from '../Contenedor/ContenedorFs.js';
-import Contenedor from '../daos/productos/productosDaoFs.js'
-export const rutaProducto = express.Router();
+const rutaProducto = express.Router();
 
-const productos = new Contenedor('src/db/productos.txt');
+import { productos } from '../daos/index.js';
 
 const privilegio = (req, res, next) => {
-    const administrador = req.headers.administrador;
-    if (administrador == 'true') {
+    // const administrador = req.headers.administrador;
+    // if (administrador == 'true') {
         next();
-    } else {
-        res.status(401).send({ error: -1, descr: `ruta ${req.url} no autorizada`});
-    }
+    // } else {
+    //     res.status(401).send({ error: -1, descr: `ruta ${req.url} no autorizada`});
+    // }
 }
 
 rutaProducto.get('/', async (req, res) => {
@@ -26,9 +25,11 @@ rutaProducto.get('/:id', async (req, res) => {
 });
 
 rutaProducto.post('/', privilegio, async (req, res) => {
-    const data = req.body;
-    const newProducto = await productos.save(data);
-    res.json(data);
+    const producto = req.body;
+    await productos.save(producto);
+    res.json({
+        status: 'ok '
+    });
 });
 
 rutaProducto.put('/:id', privilegio, async (req, res) => {
@@ -46,4 +47,4 @@ rutaProducto.delete('/:id', privilegio, async (req, res) => {
     });
 });
 
-/* export { rutaProducto }; */
+export { rutaProducto };
